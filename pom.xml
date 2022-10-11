@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>app.hook</groupId>
 	<artifactId>archival</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>archival</name>
 	<description>archival and backup service for hook</description>
 	<properties>
