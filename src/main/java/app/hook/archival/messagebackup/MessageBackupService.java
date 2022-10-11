@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Component
-public class MessageBackService {
+public class MessageBackupService {
     private List<Message> messages = new ArrayList<>(Arrays.asList(
             new Message("message-id-1", null),
             new Message("message-id-2", null)

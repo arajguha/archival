@@ -16,7 +16,7 @@ import java.util.List;
 public class MessageBackupController {
 
     @Autowired
-    private MessageBackService backupService;
+    private MessageBackupService backupService;
 
     @GetMapping("/v1/getAll")
     public ResponseEntity<List<Message>> getAllMessages() {
