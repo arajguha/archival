@@ -3,13 +3,13 @@ package app.hook.archival.messagebackup;
 import app.hook.archival.commons.ApiResponse;
 import app.hook.archival.commons.exception.GenericException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
 public class MessageBackupService {
 
     @Autowired
