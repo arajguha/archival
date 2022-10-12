@@ -41,4 +41,14 @@ public class BackupMessageRequest {
     public void setMessage(String message) {
         this.message = message;
     }
+
+    // TODO: create ValidationException and use it for validation errors
+    public void validate() throws Exception {
+        if (this.receivedAt == null) {
+            throw new Exception("receivedAt cannot be null");
+        }
+        if (this.messageId == null) {
+            throw new Exception("messageId is required");
+        }
+    }
 }

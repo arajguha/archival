@@ -1,16 +1,17 @@
 package app.hook.archival.messagebackup;
 
+import app.hook.archival.commons.ApiResponse;
 import app.hook.archival.commons.BackupMessageRequest;
+import app.hook.archival.commons.exception.GenericException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.NonNull;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
-// TODO: Create custom ApiResponse class to be used inside ResponseEntity
+// TODO: Use Builder pattern for building ApiResponse object
 @RestController
 public class MessageBackupController {
 
@@ -18,26 +19,47 @@ public class MessageBackupController {
     private MessageBackupService backupService;
 
     @GetMapping("/v1/getAll")
-    public ResponseEntity<List<Message>> getAllMessages() {
-        return ResponseEntity.status(HttpStatus.OK).body(this.backupService.getAllMessages());
+    public ResponseEntity<ApiResponse> getAllMessages() {
+        try {
+            List<Message> messageList = this.backupService.getAllMessages();
+            ApiResponse<List<Message>> response = new ApiResponse<>(messageList);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (GenericException e) {
+            ApiResponse response = new ApiResponse(e);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping("/v1/get-message/{messageId}")
-    public ResponseEntity<Message>  getMessageById(@PathVariable String messageId) {
-        Optional<Message> data = this.backupService.getMessageById(messageId);
-        if (!data.isPresent()) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+    public ResponseEntity<ApiResponse>  getMessageById(@PathVariable String messageId) {
+        try {
+            ApiResponse response = null;
+            Optional<Message> data = this.backupService.getMessageById(messageId);
+            if (!data.isPresent()) {
+                response = new ApiResponse(true, null, null);
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            response = new ApiResponse<Optional<Message>>(Optional.of(data.get()));
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(new GenericException(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return ResponseEntity.status(HttpStatus.OK).body(data.get());
+
     }
 
     @PostMapping("/v1/backup-message")
-    public ResponseEntity<String> backupMessage(@RequestBody BackupMessageRequest requestBody) {
-        this.backupService.saveMessage(new Message(
-                requestBody.getMessageId(),
-                requestBody.getMessage(),
-                new Date(requestBody.getReceivedAt())
-        ));
-        return ResponseEntity.status(HttpStatus.OK).body("OK");
+    public ResponseEntity<ApiResponse> backupMessage(@RequestBody @NonNull BackupMessageRequest requestBody) {
+        try {
+            requestBody.validate();
+            this.backupService.saveMessage(new Message(
+                    requestBody.getMessageId(),
+                    requestBody.getMessage(),
+                    new Date(requestBody.getReceivedAt())
+            ));
+            return new ResponseEntity<>(new ApiResponse<String>("saved"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(new GenericException(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 }
