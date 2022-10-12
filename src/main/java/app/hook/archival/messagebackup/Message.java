@@ -1,20 +1,29 @@
 package app.hook.archival.messagebackup;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Date;
 
+@Entity
 public class Message {
-    private Date receivedAt;
+
+    @Id
+    @Column(name = "messageId", nullable = false)
     private String messageId;
-    private Object message;
+
+    private Date receivedAt;
+
+    private String message; // Stringified JSON
 
     public Message() {}
 
-    public Message(String messageId, Object message) {
+    public Message(String messageId, String message) {
         this.messageId = messageId;
         this.message = message;
     }
 
-    public Message(String messageId, Object message, Date receivedAt) {
+    public Message(String messageId, String message, Date receivedAt) {
         this.receivedAt = receivedAt;
         this.messageId = messageId;
         this.message = message;
@@ -36,11 +45,11 @@ public class Message {
         this.messageId = messageId;
     }
 
-    public Object getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(Object message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 }
