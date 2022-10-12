@@ -1,4 +1,4 @@
-package app.hook.archival.messagebackup;
+package app.hook.archival.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,7 +1,8 @@
-package app.hook.archival.messagebackup;
+package app.hook.archival.service;
 
-import app.hook.archival.commons.ApiResponse;
 import app.hook.archival.commons.exception.GenericException;
+import app.hook.archival.model.Message;
+import app.hook.archival.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
