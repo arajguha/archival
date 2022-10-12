@@ -1,4 +1,4 @@
-package app.hook.archival.commons;
+package app.hook.archival.commons.requests;
 
 public class BackupMessageRequest {
     private Long receivedAt;

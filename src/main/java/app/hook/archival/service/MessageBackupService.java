@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,11 +27,11 @@ public class MessageBackupService {
         }
     }
 
-    public Optional<Message> getMessageById(String messageId) throws Exception {
+    public Optional<Message> getMessageById(String messageId) {
         return this.messageRepository.findById(messageId);
     }
 
-    public void saveMessage(Message message) throws Exception {
+    public void saveMessage(Message message) {
         this.messageRepository.save(message);
     }
 }

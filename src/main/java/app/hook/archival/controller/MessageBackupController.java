@@ -1,7 +1,7 @@
 package app.hook.archival.controller;
 
 import app.hook.archival.commons.ApiResponse;
-import app.hook.archival.commons.BackupMessageRequest;
+import app.hook.archival.commons.requests.BackupMessageRequest;
 import app.hook.archival.commons.exception.GenericException;
 import app.hook.archival.model.Message;
 import app.hook.archival.service.MessageBackupService;
@@ -63,4 +63,5 @@ public class MessageBackupController {
             return new ResponseEntity<>(new ApiResponse(new GenericException(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
 }
