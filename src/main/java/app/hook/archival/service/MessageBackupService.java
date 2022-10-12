@@ -34,4 +34,8 @@ public class MessageBackupService {
     public void saveMessage(Message message) {
         this.messageRepository.save(message);
     }
+
+    public List<Message> getMessagesWithinDateRange(Date startDate, Date endDate) {
+        return this.messageRepository.findMessagesWithinDateRange(startDate, endDate);
+    }
 }

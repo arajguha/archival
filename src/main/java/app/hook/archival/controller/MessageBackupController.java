@@ -3,6 +3,7 @@ package app.hook.archival.controller;
 import app.hook.archival.commons.ApiResponse;
 import app.hook.archival.commons.requests.BackupMessageRequest;
 import app.hook.archival.commons.exception.GenericException;
+import app.hook.archival.commons.requests.ListMessageRequest;
 import app.hook.archival.model.Message;
 import app.hook.archival.service.MessageBackupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +60,17 @@ public class MessageBackupController {
                     new Date(requestBody.getReceivedAt())
             ));
             return new ResponseEntity<>(new ApiResponse<String>("saved"), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(new ApiResponse(new GenericException(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/v1/list")
+    public ResponseEntity<ApiResponse> listMessages(@RequestBody @NonNull ListMessageRequest requestBody) {
+        try {
+            List<Message> messageList =
+                    this.backupService.getMessagesWithinDateRange(requestBody.getStartDate(), requestBody.getEndDate());
+            return new ResponseEntity<>(new ApiResponse<List<Message>>(messageList), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse(new GenericException(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
         }
