@@ -21,7 +21,7 @@ public class MessageBackupController {
     @Autowired
     private MessageBackupService backupService;
 
-    @GetMapping("/v1/getAll")
+    @GetMapping("/getAll")
     public ResponseEntity<ApiResponse> getAllMessages() {
         try {
             List<Message> messageList = this.backupService.getAllMessages();
@@ -33,7 +33,7 @@ public class MessageBackupController {
         }
     }
 
-    @GetMapping("/v1/get-message/{messageId}")
+    @GetMapping("/get-message/{messageId}")
     public ResponseEntity<ApiResponse>  getMessageById(@PathVariable String messageId) {
         try {
             ApiResponse response = null;
@@ -47,10 +47,9 @@ public class MessageBackupController {
         } catch (Exception e) {
             return new ResponseEntity<>(new ApiResponse(new GenericException(e.getMessage())), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
-    @PostMapping("/v1/backup-message")
+    @PostMapping("/backup-message")
     public ResponseEntity<ApiResponse> backupMessage(@RequestBody @NonNull BackupMessageRequest requestBody) {
         try {
             requestBody.validate();
@@ -65,7 +64,7 @@ public class MessageBackupController {
         }
     }
 
-    @PostMapping("/v1/list")
+    @PostMapping("/list")
     public ResponseEntity<ApiResponse> listMessages(@RequestBody @NonNull ListMessageRequest requestBody) {
         try {
             List<Message> messageList =
